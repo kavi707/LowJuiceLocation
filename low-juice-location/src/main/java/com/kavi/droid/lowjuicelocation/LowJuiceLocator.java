@@ -44,7 +44,7 @@ public class LowJuiceLocator extends PhoneStateListener {
      * @param onLocationChangeListener Callback method to onLocation change due to Network Cell change
      * @return LowJuiceLocator object - instance of the LowJuiceLocator
      */
-    public static LowJuiceLocator init(Context context, OnLocationChangeListener onLocationChangeListener) {
+    public static LowJuiceLocator getInstance(Context context, OnLocationChangeListener onLocationChangeListener) {
         if (locator == null)
             locator = new LowJuiceLocator(context, onLocationChangeListener);
 

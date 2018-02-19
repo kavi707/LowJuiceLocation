@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LowJuiceLocator.init(context, this);
         setUpView();
     }
 
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                 ActivityCompat.checkSelfPermission(context, ACCESS_NETWORK_STATE)
                         == PackageManager.PERMISSION_GRANTED ) {
 
-            LowJuiceLocator.init(context, MainActivity.this).refreshLocation();
+            LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
         } else {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{ACCESS_NETWORK_STATE, ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION,
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                                     == PackageManager.PERMISSION_GRANTED &&
                             ActivityCompat.checkSelfPermission(context, ACCESS_NETWORK_STATE)
                                     == PackageManager.PERMISSION_GRANTED ) {
-                        LowJuiceLocator.init(context, MainActivity.this).refreshLocation();
+                        LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
                     }
                 } else {
                     continueWithPermissions();

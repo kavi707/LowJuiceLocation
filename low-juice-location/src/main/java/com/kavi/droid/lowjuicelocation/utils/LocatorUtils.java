@@ -31,6 +31,10 @@ public class LocatorUtils {
         this.context = context;
     }
 
+    /**
+     * Retrieve network MCC, MNC and network type from TelephonyManager & create NetworkOperatorInfo model
+     * @return NetworkOperatorInfo object - Includes MCC, MNC & NetworkType
+     */
     public NetworkOperatorInfo getOperatorInfo() {
         NetworkOperatorInfo networkOperatorInfo = null;
 
@@ -58,6 +62,10 @@ public class LocatorUtils {
         return networkOperatorInfo;
     }
 
+    /**
+     * Retrieve Network cell details using TelephonyManager & create NetworkCellInfo model
+     * @return NetworkCellInfo object - Includes CellId, LAC
+     */
     public NetworkCellInfo getCellInfo() {
 
         GsmCellLocation location;
@@ -79,6 +87,11 @@ public class LocatorUtils {
         return networkCellInfo;
     }
 
+    /**
+     * Get the network type name from given network type
+     * @param code NetworkType code return from TelephonyManager
+     * @return String object - Name of the network type (gsm, cdma, utms, lte) & default case will be unknown
+     */
     private String getNetworkTypeFromCode(int code) {
         String networkType = "";
         switch (code) {

@@ -7,19 +7,19 @@ package com.kavi.droid.lowjuicelocation.models;
 
 public class Location {
 
-    private long longitude;
-    private long latitude;
+    private double longitude;
+    private double latitude;
 
-    public Location(long longitude, long latitude) {
+    public Location(double longitude, double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 }

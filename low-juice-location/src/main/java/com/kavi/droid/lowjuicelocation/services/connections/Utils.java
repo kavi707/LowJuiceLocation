@@ -29,7 +29,7 @@ public class Utils {
         LocationDetail locationDetail = null;
         try {
             if (response != null) {
-                Location location = new Location(response.getLong("lon"), response.getLong("lat"));
+                Location location = new Location(response.getDouble("lon"), response.getDouble("lat"));
                 locationDetail = new LocationDetail(location,
                         response.getString("address"),
                         response.getDouble("accuracy"));

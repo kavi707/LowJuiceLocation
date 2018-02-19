@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">LowJuiceLocation</string>
+    <string name="app_name">Low Juice Location</string>
+    <string name="try_me">Try Me..!</string>
 </resources>

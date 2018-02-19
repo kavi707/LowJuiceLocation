@@ -28,11 +28,22 @@ public class LowJuiceLocator extends PhoneStateListener {
     private OnLocationChangeListener onLocationChangeListener;
     private ApiCalls apiCalls = new ApiCalls();
 
-    public LowJuiceLocator(Context context, OnLocationChangeListener onLocationChangeListener) {
+    /**
+     * Create new instance of the LowJuiceLocator
+     * @param context Application/Activity context
+     * @param onLocationChangeListener Callback method to onLocation change due to Network Cell change
+     */
+    private LowJuiceLocator(Context context, OnLocationChangeListener onLocationChangeListener) {
         this.context = context;
         this.onLocationChangeListener = onLocationChangeListener;
     }
 
+    /**
+     * Initiate LowJuiceLocator
+     * @param context Application/Activity context
+     * @param onLocationChangeListener Callback method to onLocation change due to Network Cell change
+     * @return LowJuiceLocator object - instance of the LowJuiceLocator
+     */
     public static LowJuiceLocator init(Context context, OnLocationChangeListener onLocationChangeListener) {
         if (locator == null)
             locator = new LowJuiceLocator(context, onLocationChangeListener);
@@ -41,13 +52,15 @@ public class LowJuiceLocator extends PhoneStateListener {
     }
 
 
+    /**
+     * Refresh & get location from Network Cell
+     */
+    @RequiresPermission(allOf = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     public void refreshLocation() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-            getLocationFromNetwork();
-        }
+        NetworkOperatorInfo networkOperatorInfo = LocatorUtils.getInstance(context).getOperatorInfo();
+        NetworkCellInfo networkCellInfo = LocatorUtils.getInstance(context).getCellInfo();
+
+        getLocation(networkOperatorInfo, networkCellInfo);
     }
 
 
@@ -55,18 +68,20 @@ public class LowJuiceLocator extends PhoneStateListener {
     public void onCellLocationChanged(CellLocation location) {
         super.onCellLocationChanged(location);
         if (location != null) {
-            refreshLocation();
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                refreshLocation();
+            }
         }
     }
 
-    @RequiresPermission(allOf = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
-    private void getLocationFromNetwork() {
-        NetworkOperatorInfo networkOperatorInfo = LocatorUtils.getInstance(context).getOperatorInfo();
-        NetworkCellInfo networkCellInfo = LocatorUtils.getInstance(context).getCellInfo();
-
-        getLocation(networkOperatorInfo, networkCellInfo);
-    }
-
+    /**
+     * Get Location from OpenCellId
+     * @param networkOperatorInfo NetworkOperatorInfo object includes MCC, MNC, & network type data
+     * @param networkCellInfo NetworkCellInfo object includes CellId & LAC data
+     */
     private void getLocation(NetworkOperatorInfo networkOperatorInfo, NetworkCellInfo networkCellInfo) {
         apiCalls.getLocation(context, Constants.ASYNC_METHOD,
                 networkOperatorInfo, networkCellInfo, new ApiCallResponseHandler() {

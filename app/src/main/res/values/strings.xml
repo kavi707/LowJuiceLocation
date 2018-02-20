@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Low Juice Location</string>
+
     <string name="try_me">Try Me..!</string>
+    <string name="label_latitude">Latitude:</string>
+    <string name="label_longitude">Longitude:</string>
+    <string name="label_address">Address:</string>
 </resources>

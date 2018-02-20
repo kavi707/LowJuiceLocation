@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.kavi.droid.lowjuicelocation.LowJuiceLocator;
 import com.kavi.droid.lowjuicelocation.OnLocationChangeListener;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
 
     private Context context = this;
     private Button tryMeBtn;
+    private TextView longitudeText, latitudeText, addressText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
     private void setUpView() {
 
         tryMeBtn = (Button) findViewById(R.id.try_me_btn);
+        longitudeText = (TextView) findViewById(R.id.longitude_text);
+        latitudeText = (TextView) findViewById(R.id.latitude_text);
+        addressText = (TextView) findViewById(R.id.address_text);
+
         tryMeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +65,11 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
 
     @Override
     public void onLocationChange(LocationDetail locationDetail) {
-
+        if (locationDetail != null) {
+            longitudeText.setText(String.valueOf(locationDetail.getLocation().getLongitude()));
+            latitudeText.setText(String.valueOf(locationDetail.getLocation().getLatitude()));
+            addressText.setText(String.valueOf(locationDetail.getAddress()));
+        }
     }
 
     @Override

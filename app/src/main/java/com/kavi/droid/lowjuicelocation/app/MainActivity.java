@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kavi.droid.lowjuicelocation.LowJuiceLocator;
 import com.kavi.droid.lowjuicelocation.OnLocationChangeListener;
@@ -61,6 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                 LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
             } catch (AirplaneModeException | UnknownNetworkTypeException e) {
                 e.printStackTrace();
+                if (e instanceof AirplaneModeException) {
+                    Toast.makeText(context, R.string.airplane_mode_error_text, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, R.string.unknown_network_type_error_text, Toast.LENGTH_LONG).show();
+                }
             }
         } else {
             ActivityCompat.requestPermissions(MainActivity.this,
@@ -96,6 +102,12 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                             LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
                         } catch (AirplaneModeException | UnknownNetworkTypeException e) {
                             e.printStackTrace();
+
+                            if (e instanceof AirplaneModeException) {
+                                Toast.makeText(context, R.string.airplane_mode_error_text, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(context, R.string.unknown_network_type_error_text, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 } else {

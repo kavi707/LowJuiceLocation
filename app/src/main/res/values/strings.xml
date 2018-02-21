@@ -2,7 +2,11 @@
     <string name="app_name">Low Juice Location</string>
 
     <string name="try_me">Try Me..!</string>
+
     <string name="label_latitude">Latitude:</string>
     <string name="label_longitude">Longitude:</string>
     <string name="label_address">Address:</string>
+
+    <string name="airplane_mode_error_text">Your device is in Airplane mode</string>
+    <string name="unknown_network_type_error_text">Unknown network type detected</string>
 </resources>

@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="google_android_map_api_key">AIzaSyA5H4twnBTxmWJ_241U32x5p-m9tY0iDqc</string>
+
     <string name="app_name">Low Juice Location</string>
 
     <string name="try_me">Try Me..!</string>

@@ -11,6 +11,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.kavi.droid.lowjuicelocation.LowJuiceLocator;
 import com.kavi.droid.lowjuicelocation.OnLocationChangeListener;
 import com.kavi.droid.lowjuicelocation.exceptions.AirplaneModeException;
@@ -21,11 +33,13 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_NETWORK_STATE;
 
-public class MainActivity extends AppCompatActivity implements OnLocationChangeListener {
+public class MainActivity extends AppCompatActivity implements OnLocationChangeListener, OnMapReadyCallback {
 
     private Context context = this;
     private Button tryMeBtn;
     private TextView longitudeText, latitudeText, addressText;
+    private SupportMapFragment mapFragment;
+    private GoogleMap getGoogleMap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
         longitudeText = (TextView) findViewById(R.id.longitude_text);
         latitudeText = (TextView) findViewById(R.id.latitude_text);
         addressText = (TextView) findViewById(R.id.address_text);
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         tryMeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +99,19 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
             longitudeText.setText(String.valueOf(locationDetail.getLocation().getLongitude()));
             latitudeText.setText(String.valueOf(locationDetail.getLocation().getLatitude()));
             addressText.setText(String.valueOf(locationDetail.getAddress()));
+
+            getGoogleMap.clear();
+
+            if (getGoogleMap != null) {
+                LatLng defaultLocation = new LatLng(locationDetail.getLocation().getLatitude(),
+                        locationDetail.getLocation().getLongitude());
+                getGoogleMap.addMarker(new MarkerOptions().position(defaultLocation)
+                        .title("Marker in Network Location"));
+                getGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(locationDetail.getLocation().getLatitude(),
+                                locationDetail.getLocation().getLongitude()),
+                        13.0f));
+            }
         }
     }
 
@@ -114,5 +145,16 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                     continueWithPermissions();
                 }
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        getGoogleMap = googleMap;
+
+        LatLng defaultLocation = new LatLng(0, 0);
+        getGoogleMap.addMarker(new MarkerOptions().position(defaultLocation)
+                .title("Marker in Default Location"));
+        getGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation));
     }
 }

@@ -18,6 +18,25 @@ In this module we grab the location through Network Cells. Using Android SDK Tel
   
 ## Install
 
+Add the following to root `build.gradle` file.
+
+```
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+Then for the dependency, Add the following to `app` module `build.gradle` file
+
+```
+dependencies {
+    compile 'com.github.kavi707:LowJuiceLocation:1.0.0'
+}
+```
+
 ## How you use
 
 After you install the dependency, You can use following code snippet to retrieve the location from Network

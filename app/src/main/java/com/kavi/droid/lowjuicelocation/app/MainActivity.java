@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.kavi.droid.lowjuicelocation.LowJuiceLocator;
 import com.kavi.droid.lowjuicelocation.OnLocationChangeListener;
+import com.kavi.droid.lowjuicelocation.exceptions.AirplaneModeException;
+import com.kavi.droid.lowjuicelocation.exceptions.UnknownNetworkTypeException;
 import com.kavi.droid.lowjuicelocation.models.LocationDetail;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -55,7 +57,11 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                 ActivityCompat.checkSelfPermission(context, ACCESS_NETWORK_STATE)
                         == PackageManager.PERMISSION_GRANTED ) {
 
-            LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
+            try {
+                LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
+            } catch (AirplaneModeException | UnknownNetworkTypeException e) {
+                e.printStackTrace();
+            }
         } else {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{ACCESS_NETWORK_STATE, ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION,
@@ -86,7 +92,11 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                                     == PackageManager.PERMISSION_GRANTED &&
                             ActivityCompat.checkSelfPermission(context, ACCESS_NETWORK_STATE)
                                     == PackageManager.PERMISSION_GRANTED ) {
-                        LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
+                        try {
+                            LowJuiceLocator.getInstance(context, MainActivity.this).refreshLocation();
+                        } catch (AirplaneModeException | UnknownNetworkTypeException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     continueWithPermissions();

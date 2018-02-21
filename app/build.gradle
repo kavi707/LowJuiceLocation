@@ -1,6 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        prodRelease {
+            keyAlias 'LOWJUICELOCATOR'
+            keyPassword 'ljl123#'
+            storeFile file('keystore/low-juice-locator-sign-key.jks')
+            storePassword 'ljl123#'
+        }
+        devRelease {
+            keyAlias 'androiddebugkey'
+            storeFile file('keystore/debug.keystore')
+            keyPassword 'android'
+            storePassword 'android'
+        }
+    }
+
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.kavi.droid.lowjuicelocation.app"
@@ -13,7 +28,17 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.prodRelease
+        }
+
+        debug {
+            minifyEnabled false
+            debuggable true
+
+            signingConfig signingConfigs.devRelease
         }
     }
 }

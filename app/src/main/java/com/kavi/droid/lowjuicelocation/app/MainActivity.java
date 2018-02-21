@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
                 LatLng defaultLocation = new LatLng(locationDetail.getLocation().getLatitude(),
                         locationDetail.getLocation().getLongitude());
                 getGoogleMap.addMarker(new MarkerOptions().position(defaultLocation)
-                        .title("Marker in Network Location"));
+                        .title(getString(R.string.network_locations_label)));
                 getGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                         new LatLng(locationDetail.getLocation().getLatitude(),
                                 locationDetail.getLocation().getLongitude()),
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements OnLocationChangeL
 
         LatLng defaultLocation = new LatLng(0, 0);
         getGoogleMap.addMarker(new MarkerOptions().position(defaultLocation)
-                .title("Marker in Default Location"));
+                .title(getString(R.string.default_location_label)));
         getGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLocation));
     }
 }

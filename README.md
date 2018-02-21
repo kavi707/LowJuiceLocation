@@ -23,12 +23,18 @@ In this module we grab the location through Network Cells. Using Android SDK Tel
 After you install the dependency, You can use following code snippet to retrieve the location from Network
 
 ```java
-LowJuiceLocator.getInstance(context, new OnLocationChangeListener() {
-                @Override
-                public void onLocationChange(LocationDetail locationDetail) {
-                    // Do something from location data
-                }
-            }).refreshLocation();
+    try {
+        LowJuiceLocator.getInstance(context, new OnLocationChangeListener() {
+            @Override
+            public void onLocationChange(LocationDetail locationDetail) {
+                // Do something from location data
+            }
+        }).refreshLocation();
+    } catch (AirplaneModeException e) {
+        // Handle the Airplane mode case
+    } catch (UnknownNetworkTypeException e) {
+        // Handle the Unknow network type case
+    }
 ```
 
 ## What are these 'Network cells'?

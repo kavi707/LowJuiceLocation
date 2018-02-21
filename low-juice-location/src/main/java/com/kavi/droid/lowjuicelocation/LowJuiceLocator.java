@@ -8,6 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.CellLocation;
 import android.telephony.PhoneStateListener;
 
+import com.kavi.droid.lowjuicelocation.exceptions.AirplaneModeException;
+import com.kavi.droid.lowjuicelocation.exceptions.UnknownNetworkTypeException;
 import com.kavi.droid.lowjuicelocation.models.LocationDetail;
 import com.kavi.droid.lowjuicelocation.models.NetworkCellInfo;
 import com.kavi.droid.lowjuicelocation.models.NetworkOperatorInfo;
@@ -56,11 +58,15 @@ public class LowJuiceLocator extends PhoneStateListener {
      * Refresh & get location from Network Cell
      */
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
-    public void refreshLocation() {
-        NetworkOperatorInfo networkOperatorInfo = LocatorUtils.getInstance(context).getOperatorInfo();
-        NetworkCellInfo networkCellInfo = LocatorUtils.getInstance(context).getCellInfo();
+    public void refreshLocation() throws AirplaneModeException, UnknownNetworkTypeException {
+        if (!LocatorUtils.isAirplaneModeOn(context)) {
+            NetworkOperatorInfo networkOperatorInfo = LocatorUtils.getInstance(context).getOperatorInfo();
+            NetworkCellInfo networkCellInfo = LocatorUtils.getInstance(context).getCellInfo();
 
-        getLocation(networkOperatorInfo, networkCellInfo);
+            getLocation(networkOperatorInfo, networkCellInfo);
+        } else {
+            throw new AirplaneModeException();
+        }
     }
 
 
@@ -72,7 +78,11 @@ public class LowJuiceLocator extends PhoneStateListener {
                     == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-                refreshLocation();
+                try {
+                    refreshLocation();
+                } catch (AirplaneModeException | UnknownNetworkTypeException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

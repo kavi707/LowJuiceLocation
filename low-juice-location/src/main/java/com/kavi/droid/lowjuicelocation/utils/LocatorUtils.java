@@ -3,10 +3,12 @@ package com.kavi.droid.lowjuicelocation.utils;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 
+import com.kavi.droid.lowjuicelocation.exceptions.UnknownNetworkTypeException;
 import com.kavi.droid.lowjuicelocation.models.NetworkCellInfo;
 import com.kavi.droid.lowjuicelocation.models.NetworkOperatorInfo;
 
@@ -32,10 +34,21 @@ public class LocatorUtils {
     }
 
     /**
+     * Gets the state of Airplane Mode.
+     *
+     * @param context
+     * @return true if enabled.
+     */
+    public static boolean isAirplaneModeOn(Context context) {
+        return Settings.System.getInt(context.getContentResolver(),
+                Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+    }
+
+    /**
      * Retrieve network MCC, MNC and network type from TelephonyManager & create NetworkOperatorInfo model
      * @return NetworkOperatorInfo object - Includes MCC, MNC & NetworkType
      */
-    public NetworkOperatorInfo getOperatorInfo() {
+    public NetworkOperatorInfo getOperatorInfo() throws UnknownNetworkTypeException {
         NetworkOperatorInfo networkOperatorInfo = null;
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
@@ -92,7 +105,7 @@ public class LocatorUtils {
      * @param code NetworkType code return from TelephonyManager
      * @return String object - Name of the network type (gsm, cdma, utms, lte) & default case will be unknown
      */
-    private String getNetworkTypeFromCode(int code) {
+    private String getNetworkTypeFromCode(int code) throws UnknownNetworkTypeException {
         String networkType = "";
         switch (code) {
             case 16:
@@ -112,7 +125,7 @@ public class LocatorUtils {
                 break;
             default:
                 networkType = NetworkOperatorInfo.UNKNOWN_TYPE;
-                break;
+                throw new UnknownNetworkTypeException();
         }
         return networkType;
     }

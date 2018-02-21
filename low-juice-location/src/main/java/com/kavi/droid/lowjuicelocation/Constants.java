@@ -12,6 +12,9 @@ public class Constants {
     public static final String SERVER_ERROR_EXCEPTION_MSG = "SERVER_ERROR_EXCEPTION_MSG";
     public static final String UNAUTHORIZED_EXCEPTION_MSG = "UNAUTHORIZED_EXCEPTION_MSG";
 
+    public static final String UNKNOWN_NETWORK_TYPE_EXCEPTION_MSG = "UNKNOWN_NETWORK_TYPE_EXCEPTION_MSG";
+    public static final String AIRPLANE_MODE_EXCEPTION_MSG = "AIRPLANE_MODE_EXCEPTION_MSG";
+
     public static final String ASYNC_METHOD = "ASYNC";
     public static final String SYNC_METHOD = "SYNC";
 

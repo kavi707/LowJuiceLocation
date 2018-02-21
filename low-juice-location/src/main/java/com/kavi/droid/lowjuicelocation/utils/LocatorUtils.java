@@ -36,7 +36,7 @@ public class LocatorUtils {
     /**
      * Gets the state of Airplane Mode.
      *
-     * @param context
+     * @param context Application/Activity context
      * @return true if enabled.
      */
     public static boolean isAirplaneModeOn(Context context) {
@@ -47,6 +47,7 @@ public class LocatorUtils {
     /**
      * Retrieve network MCC, MNC and network type from TelephonyManager & create NetworkOperatorInfo model
      * @return NetworkOperatorInfo object - Includes MCC, MNC & NetworkType
+     * @throws UnknownNetworkTypeException Throws if couldn't get the network type of the signal
      */
     public NetworkOperatorInfo getOperatorInfo() throws UnknownNetworkTypeException {
         NetworkOperatorInfo networkOperatorInfo = null;
@@ -104,6 +105,7 @@ public class LocatorUtils {
      * Get the network type name from given network type
      * @param code NetworkType code return from TelephonyManager
      * @return String object - Name of the network type (gsm, cdma, utms, lte) & default case will be unknown
+     * @throws UnknownNetworkTypeException Throws if couldn't get the network type of the signal
      */
     private String getNetworkTypeFromCode(int code) throws UnknownNetworkTypeException {
         String networkType = "";

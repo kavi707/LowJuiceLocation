@@ -56,6 +56,8 @@ public class LowJuiceLocator extends PhoneStateListener {
 
     /**
      * Refresh & get location from Network Cell
+     * @throws AirplaneModeException Throws if, device is in Airplane mode
+     * @throws UnknownNetworkTypeException Throws if couldn't get the network type of the signal
      */
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     public void refreshLocation() throws AirplaneModeException, UnknownNetworkTypeException {
